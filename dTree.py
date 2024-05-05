@@ -1,12 +1,11 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.impute import SimpleImputer
+from sklearn.impute import SimpleImputer, KNNImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.impute import KNNImputer
 
 # Load training features and labels
 train_features_path = './training_set_values.csv'
@@ -54,14 +53,14 @@ preprocessor = ColumnTransformer(
         ('cat', categorical_transformer, cat_cols)
     ])
 
-# use KNNImputer for numerical data
+# Use KNNImputer for numerical data
 num_imputer = KNNImputer(n_neighbors=5)
 numerical_transformer = Pipeline(steps=[
     ('imputer', num_imputer)
 ])
 
 # Define the model
-model = RandomForestClassifier(n_estimators=100, random_state=0)
+model = DecisionTreeClassifier(random_state=0)
 
 # Create and evaluate the pipeline
 pipeline = Pipeline(steps=[('preprocessor', preprocessor),
